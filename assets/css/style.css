@@ -207,8 +207,10 @@ section { padding: clamp(64px, 8vw, 110px) 0; }
   min-height: 78px;
 }
 
-/* Wordmark */
-.brand { display: flex; align-items: center; gap: 13px; flex: none; }
+/* Wordmark — allowed to shrink so it never pushes the menu button off-screen
+   on narrow phones (320px and similar) */
+.brand { display: flex; align-items: center; gap: 13px; flex: 0 1 auto; min-width: 0; }
+.brand > span { min-width: 0; }
 .brand:hover { color: inherit; }
 /* Clinic mark, traced from the Premier 101 shopfront signage */
 .brand__mark {
@@ -894,31 +896,44 @@ section { padding: clamp(64px, 8vw, 110px) 0; }
 }
 
 @media (max-width: 900px) {
-  /* The off-canvas menu is a fixed element parked beyond the right edge while
-     closed. It escapes clipping on <body>, so the clip has to sit on the root.
-     `clip` rather than `hidden` keeps the sticky header working. */
-  html { overflow-x: clip; }
-
   .site-header .wrap { min-height: 68px; }
 
   .nav-toggle { display: grid; }
 
+  /* Mobile menu: a panel anchored to the bottom edge of the header that sizes
+     itself to its content — no fixed top padding, and no scrolling unless the
+     viewport is genuinely too short. --header-bottom is set by main.js to the
+     header's real height, so the panel never guesses. */
   .nav {
-    position: fixed;
-    inset: 0 0 0 auto;
-    width: min(320px, 84vw);
-    background: #fff;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
     flex-direction: column;
     align-items: stretch;
-    gap: 2px;
-    padding: 92px 22px 30px;
-    transform: translateX(102%);
-    transition: transform .32s var(--ease);
-    box-shadow: -8px 0 40px rgba(14, 59, 82, .16);
+    gap: 0;
+    padding: 4px 24px 20px;
+    background: #fff;
+    border-top: 1px solid var(--line);
+    box-shadow: 0 16px 32px rgba(14, 59, 82, .15);
+    max-height: calc(100vh - var(--header-bottom, 110px) - 16px);
+    max-height: calc(100dvh - var(--header-bottom, 110px) - 16px);
     overflow-y: auto;
+    overscroll-behavior: contain;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: opacity .24s var(--ease), transform .24s var(--ease), visibility .24s;
   }
-  .nav.is-open { transform: none; }
-  .nav a { padding: 14px 6px; font-size: 1rem; border-bottom: 1px solid var(--line); border-radius: 0; }
+  .nav.is-open { opacity: 1; visibility: visible; transform: none; }
+
+  /* :not(.btn) so the gold CTA keeps its own border */
+  .nav a:not(.btn) {
+    padding: 15px 2px;
+    font-size: 1rem;
+    border-radius: 0;
+    border-bottom: 1px solid var(--line);
+  }
   .nav a::after { display: none; }
 
   .header-cta { margin: 18px 0 0; }
@@ -934,14 +949,20 @@ section { padding: clamp(64px, 8vw, 110px) 0; }
 
 @media (max-width: 560px) {
   body { font-size: 16px; }
+  .wrap { padding-inline: 18px; }
   .grid--4 { grid-template-columns: 1fr; }
   .stats { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr; }
   .hero__actions .btn { width: 100%; }
-  .brand__name { font-size: 1.12rem; }
-  .brand__sub { font-size: .58rem; }
+  .site-header .wrap { gap: 12px; }
+  .brand { gap: 10px; }
+  .brand__mark { height: 38px; }
+  .brand__name { font-size: 1.08rem; }
+  .brand__sub { font-size: .55rem; letter-spacing: .12em; }
   .card { padding: 28px 24px; }
   .chip-list { grid-template-columns: 1fr; }
+  /* The mobile menu spans the full header width, so match the tighter gutter */
+  .nav { padding-inline: 18px; }
 }
 
 /* -------------------------------------------------------------- Print -- */

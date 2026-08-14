@@ -2,38 +2,70 @@
 (function () {
   "use strict";
 
-  /* ---------------------------------------------- Mobile navigation ---- */
+  var header = document.querySelector(".site-header");
   var toggle = document.querySelector(".nav-toggle");
   var nav = document.getElementById("primary-nav");
 
-  if (toggle && nav) {
-    var closeNav = function () {
-      nav.classList.remove("is-open");
-      toggle.setAttribute("aria-expanded", "false");
-      document.body.style.overflow = "";
+  /* ---------------------------------------------- Mobile navigation ---- */
+  if (toggle && nav && header) {
+    /* The menu panel hangs off the bottom of the header. Publish the header's
+       real height so the CSS can cap the panel at the space actually left on
+       screen, instead of guessing at a fixed value. */
+    var publishHeaderBottom = function () {
+      var bottom = Math.round(header.getBoundingClientRect().bottom);
+      document.documentElement.style.setProperty("--header-bottom", bottom + "px");
     };
 
-    toggle.addEventListener("click", function () {
-      var open = nav.classList.toggle("is-open");
+    var isOpen = function () {
+      return nav.classList.contains("is-open");
+    };
+
+    var setNav = function (open) {
+      if (open) publishHeaderBottom();
+      nav.classList.toggle("is-open", open);
       toggle.setAttribute("aria-expanded", open ? "true" : "false");
-      document.body.style.overflow = open && window.innerWidth <= 900 ? "hidden" : "";
+      toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    };
+
+    toggle.addEventListener("click", function (e) {
+      e.stopPropagation();
+      setNav(!isOpen());
     });
 
+    /* Follow the menu link, then close */
     nav.addEventListener("click", function (e) {
-      if (e.target.tagName === "A") closeNav();
+      if (e.target.closest("a")) setNav(false);
+    });
+
+    /* Tap anywhere else on the page to dismiss */
+    document.addEventListener("click", function (e) {
+      if (isOpen() && !nav.contains(e.target) && !toggle.contains(e.target)) {
+        setNav(false);
+      }
     });
 
     document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape") closeNav();
+      if (e.key === "Escape" && isOpen()) {
+        setNav(false);
+        toggle.focus();
+      }
     });
 
+    /* The topbar scrolls away above the sticky header, so the header's bottom
+       edge moves. Keep the panel's height cap in step while it is open. */
+    window.addEventListener("scroll", function () {
+      if (isOpen()) publishHeaderBottom();
+    }, { passive: true });
+
     window.addEventListener("resize", function () {
-      if (window.innerWidth > 900) closeNav();
+      if (window.innerWidth > 900) setNav(false);
+      else if (isOpen()) publishHeaderBottom();
     });
+
+    publishHeaderBottom();
   }
 
   /* -------------------------------------------- Sticky header shadow ---- */
-  var header = document.querySelector(".site-header");
   if (header) {
     var onScroll = function () {
       header.classList.toggle("is-stuck", window.scrollY > 8);
