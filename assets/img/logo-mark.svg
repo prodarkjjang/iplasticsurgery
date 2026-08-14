@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 177 294" role="img" aria-label="I Plastic Surgery Clinic logo">
+  <title>I Plastic Surgery &amp; Reconstructive Surgery Clinic</title>
+  <!-- Vector recreation of the clinic signage mark: a stylised lowercase "i"
+       forming a human figure. Gold = tittle and stem; dark = crescents.
+       Traced from the shopfront signage at Premier 101. -->
+  <g fill="#0e3b52">
+    <!-- crescent beside the tittle -->
+    <path d="M103 18 A18 18 0 0 0 100 48 L94 48 A25 25 0 0 1 94 18 Z"/>
+    <!-- crescent beside the stem -->
+    <path d="M91 54 C84 58 70 66 65 80 C62 90 70 110 89 128 C90 110 92 80 91 54 Z"/>
+    <!-- sweeping body -->
+    <path d="M92 131
+             C99 142 104 155 106 172
+             C106 190 97 210 77 228
+             C60 248 40 266 20 288
+             C38 276 68 254 97 228
+             C120 214 136 192 142 164
+             C142 150 139 140 133 132
+             C120 126 104 126 92 131 Z"/>
+  </g>
+  <g fill="#cba43c">
+    <!-- tittle -->
+    <ellipse cx="111.5" cy="34" rx="15.5" ry="18"/>
+    <!-- stem -->
+    <path d="M95.5 56 L125.5 56 L121 124 L90 124 Z"/>
+  </g>
+</svg>

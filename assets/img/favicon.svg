@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0e3b52"/>
+      <stop offset="1" stop-color="#17607f"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#bg)"/>
+  <!-- clinic mark, scaled from the 177x294 master into the badge -->
+  <g transform="translate(10.5 6) scale(0.147)">
+    <g fill="#ffffff">
+      <path d="M103 18 A18 18 0 0 0 100 48 L94 48 A25 25 0 0 1 94 18 Z"/>
+      <path d="M91 54 C84 58 70 66 65 80 C62 90 70 110 89 128 C90 110 92 80 91 54 Z"/>
+      <path d="M92 131 C99 142 104 155 106 172 C106 190 97 210 77 228 C60 248 40 266 20 288 C38 276 68 254 97 228 C120 214 136 192 142 164 C142 150 139 140 133 132 C120 126 104 126 92 131 Z"/>
+    </g>
+    <g fill="#cba43c">
+      <ellipse cx="111.5" cy="34" rx="15.5" ry="18"/>
+      <path d="M95.5 56 L125.5 56 L121 124 L90 124 Z"/>
+    </g>
+  </g>
+</svg>
